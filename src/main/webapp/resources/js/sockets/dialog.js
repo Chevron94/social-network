@@ -191,7 +191,7 @@ function onMessageReceived(evt) {
                 for (var i = 0; i < messages.length; i++) {
                     var userId = messages[i].childNodes[1].firstChild.firstChild.getAttribute("href");
                     userId = userId.substr(5);
-                    if (messages[i].classList.contains("unread") && userId !== msg.senderId) {
+                    if (messages[i].classList.contains("unread") && userId !== msg.senderId.toString()) {
                         messages[i].classList.remove("unread");
                         messages[i].classList.add("read");
                     }
