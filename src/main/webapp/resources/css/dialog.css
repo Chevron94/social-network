@@ -1,0 +1,82 @@
+.unread{
+    background: lightblue;
+}
+.read{
+    background: white;
+}
+.message{
+    background: floralwhite;
+}
+.date{
+    background: grey;
+}
+.table-fixed {
+    table-layout: fixed;
+    word-wrap: break-word;
+    over-flow:break-word;
+}
+.chat
+{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.chat li
+{
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px dotted #B3A9A9;
+}
+
+.chat li.left .chat-body
+{
+    margin-left: 60px;
+}
+
+.chat li.right .chat-body
+{
+    margin-right: 60px;
+}
+
+
+.chat li .chat-body p
+{
+    margin-top: 5px;
+    color: black;
+}
+
+.panel .slidedown .glyphicon, .chat .glyphicon
+{
+    margin-right: 5px;
+}
+
+.panel-body
+{
+    margin-top: 1%;
+    overflow-y: scroll;
+    height: 400px;
+}
+
+.btn-block-full
+{
+    height: 100%;
+}
+
+.img_wrap {
+    height: 55px;
+    background-position: center,center;
+    background-size: cover;
+}
+
+.img_wrap_profile {
+    height: 75px;
+    background-position: center,center;
+    background-size: cover;
+}
+
+.img_wrap_big {
+    height: 150px;
+    background-position: center,center;
+    background-size: cover;
+}
