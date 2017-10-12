@@ -2,6 +2,8 @@ package socialnetwork.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +46,7 @@ public class DialogController extends GenericController {
 
     @RequestMapping(value = "/dialog/getMessages", method = RequestMethod.GET)
     public @ResponseBody
-    List<MessageDto> getMessages(@RequestParam(value = "idDialog") Long idDialog, @RequestParam(value = "startMessage") Integer startMessage, HttpServletRequest request) {
+    ResponseEntity getMessages(@RequestParam(value = "idDialog") Long idDialog, @RequestParam(value = "startMessage") Integer startMessage, HttpServletRequest request) {
         Long userId = (Long) (request.getSession().getAttribute("idUser"));
         try {
             List<Message> messages = dialogBean.getMessages(userId, idDialog, startMessage, 20);
@@ -53,15 +55,15 @@ public class DialogController extends GenericController {
                 MessageDto m = new MessageDto(message);
                 messagesDto.add(m);
             }
-            return messagesDto;
+            return ResponseEntity.ok(messagesDto);
         } catch (ValidationException ex) {
-            throw new BadRequestException(ex);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 
     @RequestMapping(value = "/dialogs/loadMore", method = RequestMethod.GET)
     public @ResponseBody
-    List<DialogDto> getDialogs(@RequestParam(value = "start") Integer start, HttpServletRequest request) {
+    ResponseEntity getDialogs(@RequestParam(value = "start") Integer start, HttpServletRequest request) {
         Long idUser = (Long) (request.getSession().getAttribute("idUser"));
         try {
             List<Dialog> dialogs = dialogBean.getDialogs(idUser, start, 10);
@@ -69,52 +71,52 @@ public class DialogController extends GenericController {
             for (Dialog dialog: dialogs) {
                 result.add(new DialogDto(dialog));
             }
-            return result;
+            return ResponseEntity.ok(result);
         } catch (ValidationException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 
     @RequestMapping(value = "/dialogs/{id}", method = RequestMethod.GET)
     public @ResponseBody
-    DialogDto getDialog(@PathVariable("id") Long idDialog, HttpServletRequest request) {
+    ResponseEntity getDialog(@PathVariable("id") Long idDialog, HttpServletRequest request) {
         Long idUser = (Long) (request.getSession().getAttribute("idUser"));
         try {
             Dialog dialog = dialogBean.getDialog(idUser, idDialog);
             if (dialog == null) {
-                return null;
+                return ResponseEntity.ok().build();
             } else {
-                return new DialogDto(dialog);
+                return ResponseEntity.ok(new DialogDto(dialog));
             }
         } catch (ValidationException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 
     @RequestMapping(value = "/message", method = RequestMethod.POST)
     public @ResponseBody
-    Boolean getOrCreateDialog(@RequestParam(value = "idReceiver") Long idReceiver, @RequestParam(value = "text") String text, HttpServletRequest request) {
+    ResponseEntity getOrCreateDialog(@RequestParam(value = "idReceiver") Long idReceiver, @RequestParam(value = "text") String text, HttpServletRequest request) {
         Long userId = (Long) (request.getSession().getAttribute("idUser"));
         try {
             dialogBean.createDirectMessage(userId, idReceiver, text);
-            return true;
+            return ResponseEntity.ok(true);
         } catch (ValidationException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 
     @RequestMapping(value = "/unreadMessages", method = RequestMethod.GET)
     public @ResponseBody
-    Map<Long, Long> getDialogsWithCntUnreadMessages(HttpServletRequest request) {
+    ResponseEntity getDialogsWithCntUnreadMessages(HttpServletRequest request) {
         Long userId = getUserId(request);
-        return dialogBean.getDialogsWithNumberOfUnreadMessages(userId);
+        return ResponseEntity.ok(dialogBean.getDialogsWithNumberOfUnreadMessages(userId));
     }
 
     @RequestMapping(value = "/dialogs", method = RequestMethod.POST)
     public @ResponseBody
-    DialogDto createNewConversation(@RequestParam(value = "name") String name,
-                                 @RequestParam("users[]") Long[] users,
-                                 HttpServletRequest request) {
+    ResponseEntity createNewConversation(@RequestParam(value = "name") String name,
+                                                   @RequestParam("users[]") Long[] users,
+                                                   HttpServletRequest request) {
         try {
             Long userId = getUserId(request);
             List<Long> userIdsList = Arrays.asList(users);
@@ -122,9 +124,9 @@ public class DialogController extends GenericController {
                 userIdsList.add(userId);
             }
             Dialog dialog = dialogBean.createDialog(name, userIdsList);
-            return new DialogDto(dialog);
+            return ResponseEntity.ok(new DialogDto(dialog));
         } catch (ValidationException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 }

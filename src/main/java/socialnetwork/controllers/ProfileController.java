@@ -2,6 +2,8 @@ package socialnetwork.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -89,14 +91,14 @@ public class ProfileController extends GenericController {
 
     @RequestMapping(value = "/profile/updateMainPhoto", method = RequestMethod.POST)
     public @ResponseBody
-    Boolean updateMainPhoto(@RequestParam("idPhoto") Long idPhoto,
-                            HttpServletRequest request) {
+    ResponseEntity updateMainPhoto(@RequestParam("idPhoto") Long idPhoto,
+                                   HttpServletRequest request) {
         Long userId = getUserId(request);
         try {
             userBean.setExistsPhotoAsProfilePhoto(userId, idPhoto);
-            return true;
+            return ResponseEntity.ok(true);
         } catch (ValidationException ex) {
-            return false;
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
         }
     }
 }

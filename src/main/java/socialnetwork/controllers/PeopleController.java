@@ -2,6 +2,7 @@ package socialnetwork.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -62,38 +63,38 @@ public class PeopleController extends GenericController {
     @RequestMapping(value = "/people/sendRequest", method = RequestMethod.POST)
     public
     @ResponseBody
-    Boolean sendFriendRequest(
+    ResponseEntity sendFriendRequest(
             @RequestParam(value = "idReceiver") Long idReceiver,
             HttpServletRequest request) {
         Long userId = getUserId(request);
-        return userBean.sendFriendRequest(userId, idReceiver);
+        return ResponseEntity.ok(userBean.sendFriendRequest(userId, idReceiver));
 
     }
 
     @RequestMapping(value = "/people/confirmRequest", method = RequestMethod.POST)
     public
     @ResponseBody
-    Boolean confirmRequest(
+    ResponseEntity confirmRequest(
             @RequestParam(value = "idSender") Long idSender,
             HttpServletRequest request) {
         Long userId = getUserId(request);
-        return userBean.updateFriendRequest(idSender, userId);
+        return ResponseEntity.ok(userBean.updateFriendRequest(idSender, userId));
     }
 
     @RequestMapping(value = "/people/deleteRequest", method = RequestMethod.POST)
     public
     @ResponseBody
-    Boolean deleteRequest(
+    ResponseEntity deleteRequest(
             @RequestParam(value = "idReceiver") Long idReceiver,
             HttpServletRequest request) {
         Long userId = getUserId(request);
-        return userBean.deleteFriendRequest(userId, idReceiver);
+        return ResponseEntity.ok(userBean.deleteFriendRequest(userId, idReceiver));
     }
 
     @RequestMapping(value = "/people/more", method = RequestMethod.GET)
     public
     @ResponseBody
-    List<UserDto> loadMoreFriends(
+    ResponseEntity loadMoreFriends(
             HttpServletRequest request,
             @RequestParam(value = "idUser") Long idRequestUser,
             @RequestParam(value = "login") String login,
@@ -129,16 +130,16 @@ public class PeopleController extends GenericController {
             user.setPhotoURL(UrlConstructor.constructUrl(request.getRequestURL().toString(), user.getPhotoURL()));
             result.add(new UserDto(user));
         }
-        return result;
+        return ResponseEntity.ok(result);
     }
 
     @RequestMapping(value = "/people/requests", method = RequestMethod.GET)
     public
     @ResponseBody
-    Long getCountOfFriendRequests(HttpServletRequest request) {
+    ResponseEntity getCountOfFriendRequests(HttpServletRequest request) {
         Long idUser = getUserId(request);
         if (idUser == null)
             return null;
-        return userBean.countFriendRequest(idUser);
+        return ResponseEntity.ok(userBean.countFriendRequest(idUser));
     }
 }

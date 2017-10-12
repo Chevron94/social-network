@@ -2,6 +2,7 @@ package socialnetwork.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,33 +44,33 @@ public class RegistrationController {
 
     @RequestMapping(value = "/registration/citiesByCountry", method = RequestMethod.GET)
     public @ResponseBody
-    List<City> getCities(
+    ResponseEntity getCities(
             @RequestParam(value = "searchId") Long searchId,
             @RequestParam(value = "name") String name) {
 
-        return vocabularyBean.getCities(searchId, name);
+        return ResponseEntity.ok(vocabularyBean.getCities(searchId, name));
     }
 
     @RequestMapping(value = "/registration/countriesByContinent", method = RequestMethod.GET)
     public @ResponseBody
-    List<Country> getCountries(
+    ResponseEntity getCountries(
             @RequestParam(value = "searchId") Long searchId) {
 
-        return vocabularyBean.getCountries(searchId);
+        return ResponseEntity.ok(vocabularyBean.getCountries(searchId));
     }
 
     @RequestMapping(value = "/registration/checkLogin", method = RequestMethod.GET)
     public @ResponseBody
-    Boolean checkUserLogin(
+    ResponseEntity checkUserLogin(
             @RequestParam(value = "login") String login) {
-        return userBean.checkLogin(login);
+        return ResponseEntity.ok(userBean.checkLogin(login));
     }
 
     @RequestMapping(value = "/registration/checkEmail", method = RequestMethod.GET)
     public @ResponseBody
-    Boolean checkUserEmail(
+    ResponseEntity checkUserEmail(
             @RequestParam(value = "email") String email) {
-        return userBean.checkEmail(email);
+        return ResponseEntity.ok(userBean.checkEmail(email));
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)

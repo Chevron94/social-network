@@ -3,6 +3,8 @@ package socialnetwork.controllers;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,7 +81,7 @@ public class AlbumController extends GenericController {
     //Load more albums
     @RequestMapping(value = "/albums/more", method = RequestMethod.GET)
     public @ResponseBody
-    List<AlbumDto> loadMoreAlbums(
+    ResponseEntity loadMoreAlbums(
             @RequestParam(value = "idUser") Long idRequestUser,
             @RequestParam(value = "page") Integer page,
             @RequestParam(value = "count") Integer count,
@@ -88,68 +90,73 @@ public class AlbumController extends GenericController {
         for (Album album : albums) {
             constructUrl(request.getRequestURL().toString(), album.getPhotos());
         }
-        return convertToAlbumDto(albums);
+        return ResponseEntity.ok(convertToAlbumDto(albums));
 
     }
 
     // Create new album
     @RequestMapping(value = "/albums", method = RequestMethod.POST)
     public @ResponseBody
-    Long newAlbum(@RequestParam(value = "name") String name, HttpServletRequest request) {
+    ResponseEntity newAlbum(@RequestParam(value = "name") String name, HttpServletRequest request) {
         Long userId = getUserId(request);
         Album album = albumBean.createAlbum(userId, name);
-        return album.getId();
+        return ResponseEntity.ok(album.getId());
     }
 
     //Delete album
     @RequestMapping(value = "/albums/{id}", method = RequestMethod.DELETE)
-    public void deleteAlbum(@PathVariable("id") Long id, HttpServletRequest request) {
+    public ResponseEntity deleteAlbum(@PathVariable("id") Long id, HttpServletRequest request) {
         Long userId =  getUserId(request);
         try {
             albumBean.deleteAlbum(userId, id);
+            return ResponseEntity.ok().build();
         } catch (AccessDeniedException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
 
     @RequestMapping(value = "/albums/{id}/rename", method = RequestMethod.POST)
-    public void renameAlbum(@PathVariable("id") Long id, @RequestParam("newName") String newName, HttpServletRequest request) {
+    public ResponseEntity renameAlbum(@PathVariable("id") Long id, @RequestParam("newName") String newName, HttpServletRequest request) {
         Long userId = getUserId(request);
         try {
             albumBean.renameAlbum(userId, id, newName);
-        } catch (AccessDeniedException | NameExistsException ex) {
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.ok().build();
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
+        } catch (NameExistsException ex) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
         }
     }
 
     //Load more photos
     @RequestMapping(value = "/photos", method = RequestMethod.GET)
     public @ResponseBody
-    List<PhotoDto> loadMorePhotos(@RequestParam(value = "idAlbum") Long idAlbum,
+    ResponseEntity loadMorePhotos(@RequestParam(value = "idAlbum") Long idAlbum,
                                   @RequestParam(value = "page") Integer page,
                                   @RequestParam(value = "count") Integer count,
                                   HttpServletRequest request) {
         List<Photo> photos = albumBean.getPhotos(idAlbum, page, count);
         constructUrl(request.getRequestURL().toString(), photos);
-        return convertToPhotoDto(photos);
+        return ResponseEntity.ok(convertToPhotoDto(photos));
     }
 
     //Get number photos in album
     @RequestMapping(value = "/albums/{id}/photosCnt", method = RequestMethod.GET)
     public @ResponseBody
-    Long getCount(@PathVariable(value = "id") Long idAlbum) {
-        return albumBean.countPhotosInAlbum(idAlbum);
+    ResponseEntity getCount(@PathVariable(value = "id") Long idAlbum) {
+        return ResponseEntity.ok(albumBean.countPhotosInAlbum(idAlbum));
     }
 
     //Delete album
     @RequestMapping(value = "/photos/{id}", method = RequestMethod.DELETE)
-    public void deletePhoto(@PathVariable("id") Long id, HttpServletRequest request) {
+    public ResponseEntity deletePhoto(@PathVariable("id") Long id, HttpServletRequest request) {
         Long userId = getUserId(request);
         try {
             albumBean.deletePhoto(userId, id);
+            return ResponseEntity.ok().build();
         } catch (AccessDeniedException ex) {
             LOGGER.error(ex.getMessage());
-            throw new BadRequestException(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getMessage());
         }
     }
 
