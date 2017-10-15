@@ -75,6 +75,11 @@
 			<artifactId>commons-validator</artifactId>
 			<version>1.6</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
 		<!-- Need this to compile JSP -->
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>

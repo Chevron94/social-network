@@ -1,6 +1,7 @@
 package socialnetwork.controllers;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,8 +15,6 @@ import socialnetwork.beans.UserBean;
 import socialnetwork.beans.VocabularyBean;
 import socialnetwork.dto.registration.LanguageRegistrationDto;
 import socialnetwork.dto.registration.UserRegistrationDto;
-import socialnetwork.entities.City;
-import socialnetwork.entities.Country;
 import socialnetwork.entities.Language;
 import socialnetwork.entities.LanguageLevel;
 import socialnetwork.exceptions.ValidationException;
@@ -32,7 +31,7 @@ import java.util.List;
 @Controller
 public class RegistrationController {
 
-    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     @Autowired
     private VocabularyBean vocabularyBean;

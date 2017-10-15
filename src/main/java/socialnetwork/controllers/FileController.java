@@ -1,6 +1,7 @@
 package socialnetwork.controllers;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -17,7 +18,7 @@ import java.io.*;
  */
 @Controller
 public class FileController {
-    private static final Logger LOGGER = Logger.getLogger(FileController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileController.class);
     @RequestMapping(value = "/images/{userid}/{album}/{photo:.+}", method = RequestMethod.GET)
     public void getFile(@PathVariable("userid") String userid, @PathVariable("album") String album, @PathVariable("photo") String photo, HttpServletResponse response) {
         InputStream inputStream = null;

@@ -1,6 +1,6 @@
 package socialnetwork.beans.impl;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Component
 public class AlbumBeanImpl implements AlbumBean {
-    private static final Logger LOGGER = Logger.getLogger(AlbumBeanImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlbumBeanImpl.class);
     @Autowired
     private AlbumRepository albumRepository;
     @Autowired

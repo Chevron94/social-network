@@ -1,11 +1,11 @@
 package socialnetwork.sockets.friends;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.server.standard.SpringConfigurator;
 import socialnetwork.app.WebSocketsConfiguration;
 import socialnetwork.beans.UserBean;
 import socialnetwork.entities.FriendRequest;
@@ -24,7 +24,7 @@ import java.io.IOException;
 @ServerEndpoint(value = "/sockets/friends", configurator = WebSocketsConfiguration.class, encoders = {FriendsMessageEncoder.class}, decoders = {FriendsMessageDecoder.class})
 public class FriendsEndpoint {
 
-    private static final Logger LOGGER = Logger.getLogger(FriendsEndpoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FriendsEndpoint.class);
 
     @Autowired
     private UserBean userBean;

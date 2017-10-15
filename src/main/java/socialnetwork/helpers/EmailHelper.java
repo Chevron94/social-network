@@ -1,6 +1,6 @@
 package socialnetwork.helpers;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -15,7 +15,7 @@ import static socialnetwork.helpers.Constants.SMTP_HOST;
  * Created by Roman on 22.08.2017 21:20.
  */
 public class EmailHelper {
-    private static final Logger LOGGER = Logger.getLogger(EmailHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailHelper.class);
     public static void sendMail(String receiver, String topic, String text) {
         Properties props = new Properties();
         props.put("mail.smtp.host", SMTP_HOST);
@@ -39,7 +39,7 @@ public class EmailHelper {
             message.setText(text);
             Transport.send(message);
         } catch (MessagingException ex) {
-            LOGGER.error(ex);
+            LOGGER.error("ex: ", ex);
         }
     }
 }

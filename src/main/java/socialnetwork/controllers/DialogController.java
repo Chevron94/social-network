@@ -1,6 +1,7 @@
 package socialnetwork.controllers;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,17 @@ import socialnetwork.exceptions.ValidationException;
 import socialnetwork.sockets.dialog.MessageDto;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by roman on 10/4/15.
  */
 @Controller
 public class DialogController extends GenericController {
-    private static final Logger LOGGER = Logger.getLogger(DialogController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DialogController.class);
     @Autowired
     private UserBean userBean;
 

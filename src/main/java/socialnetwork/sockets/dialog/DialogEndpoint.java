@@ -1,10 +1,11 @@
 package socialnetwork.sockets.dialog;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.server.standard.SpringConfigurator;
 import socialnetwork.app.WebSocketsConfiguration;
 import socialnetwork.beans.DialogBean;
 import socialnetwork.beans.UserBean;
@@ -28,7 +29,7 @@ import java.util.List;
 @Component
 @ServerEndpoint(value = "/sockets/dialog", configurator = WebSocketsConfiguration.class, encoders = {DialogMessageEncoder.class}, decoders = {DialogMessageDecoder.class})
 public class DialogEndpoint {
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(DialogEndpoint.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DialogEndpoint.class);
 
     @Autowired
     private UserBean userBean;

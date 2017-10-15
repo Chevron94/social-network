@@ -1,7 +1,7 @@
 package socialnetwork.sockets.dialog;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 
 import javax.json.Json;
 import javax.json.JsonObject;
@@ -16,7 +16,7 @@ import java.util.Date;
  * Created by roman on 10/4/15.
  */
 public class DialogMessageDecoder implements Decoder.Text<MessageDto> {
-    private static final Logger LOGGER = Logger.getLogger(DialogMessageDecoder.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DialogMessageDecoder.class);
 
     @Override
     public void init(final EndpointConfig config) {

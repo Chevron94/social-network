@@ -6,8 +6,10 @@ import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -38,7 +40,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
                 context.addConstraint(securityConstraint);
             }
         };
-
+        tomcat.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
         tomcat.addAdditionalTomcatConnectors(initiateHttpConnector());
         return tomcat;
     }

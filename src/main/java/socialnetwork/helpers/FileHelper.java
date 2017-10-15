@@ -1,7 +1,7 @@
 package socialnetwork.helpers;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;import org.slf4j.LoggerFactory;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.imgscalr.Scalr;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,7 +19,7 @@ import static socialnetwork.helpers.Constants.FILES_PATH;
  */
 public class FileHelper {
 
-    private static final Logger LOGGER = Logger.getLogger(FileHelper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FileHelper.class);
 
     public static String imageInputStreamToString(MultipartFile photo, Long userId, Long albumId) {
 

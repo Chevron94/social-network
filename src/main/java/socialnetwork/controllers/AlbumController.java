@@ -1,7 +1,8 @@
 package socialnetwork.controllers;
 
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,6 @@ import socialnetwork.exceptions.AccessDeniedException;
 import socialnetwork.exceptions.NameExistsException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.BadRequestException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +29,7 @@ import java.util.List;
  */
 @Controller
 public class AlbumController extends GenericController {
-    private static final Logger LOGGER = Logger.getLogger(AlbumController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AlbumController.class);
     @Autowired
     private UserBean userBean;
 

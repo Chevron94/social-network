@@ -1,6 +1,7 @@
 package socialnetwork.controllers;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 @Controller
 public class GenericController {
-    private static final Logger LOGGER = Logger.getLogger(GenericController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GenericController.class);
     @Autowired
     private UserBean userBean;
 
