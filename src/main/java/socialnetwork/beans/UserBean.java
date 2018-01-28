@@ -1,8 +1,8 @@
 package socialnetwork.beans;
 
 import org.springframework.web.multipart.MultipartFile;
-import socialnetwork.dto.registration.LanguageRegistrationDto;
-import socialnetwork.dto.registration.UserRegistrationDto;
+import socialnetwork.dto.creation.LanguageRegistrationDto;
+import socialnetwork.dto.creation.UserRegistrationDto;
 import socialnetwork.entities.FriendRequest;
 import socialnetwork.entities.User;
 

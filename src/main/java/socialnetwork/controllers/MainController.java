@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import socialnetwork.beans.VocabularyBean;
+import socialnetwork.beans.ListBean;
 import socialnetwork.entities.Country;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +25,7 @@ public class MainController{
     private static final Logger LOGGER = LoggerFactory.getLogger(MainController.class);
 
     @Autowired
-    private VocabularyBean vocabularyBean;
+    private ListBean listBean;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String root(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -33,7 +33,7 @@ public class MainController{
         if(idUser!=null){
             return "redirect:/profile";
         }
-        List<Country> countries = vocabularyBean.getCountriesWithUsers();
+        List<Country> countries = listBean.getCountriesWithUsers();
         model.addAttribute("countries",countries);
         return "main";
     }

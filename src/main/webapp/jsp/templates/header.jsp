@@ -25,6 +25,7 @@
                 <li><a href="/users">Other users</a></li>
                 <li><a href="/dialogs" id="dialogsLink">Dialogs</a></li>
                 <li><a href="/albums">Albums</a></li>
+                <li><a href="/vocabulary">Albums</a></li>
                 <!--li><a href="/user<%=idUser.toString()%>/settings">Settings</a></li-->
             </ul>
             <%}else{

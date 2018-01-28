@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import socialnetwork.beans.CapchaBean;
 import socialnetwork.beans.UserBean;
-import socialnetwork.beans.VocabularyBean;
-import socialnetwork.dto.registration.LanguageRegistrationDto;
-import socialnetwork.dto.registration.UserRegistrationDto;
+import socialnetwork.beans.ListBean;
+import socialnetwork.dto.creation.LanguageRegistrationDto;
+import socialnetwork.dto.creation.UserRegistrationDto;
 import socialnetwork.entities.Language;
 import socialnetwork.entities.LanguageLevel;
 import socialnetwork.exceptions.ValidationException;
@@ -34,7 +34,7 @@ public class RegistrationController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationController.class);
 
     @Autowired
-    private VocabularyBean vocabularyBean;
+    private ListBean listBean;
     @Autowired
     private UserBean userBean;
 
@@ -47,7 +47,7 @@ public class RegistrationController {
             @RequestParam(value = "searchId") Long searchId,
             @RequestParam(value = "name") String name) {
 
-        return ResponseEntity.ok(vocabularyBean.getCities(searchId, name));
+        return ResponseEntity.ok(listBean.getCities(searchId, name));
     }
 
     @RequestMapping(value = "/registration/countriesByContinent", method = RequestMethod.GET)
@@ -55,7 +55,7 @@ public class RegistrationController {
     ResponseEntity getCountries(
             @RequestParam(value = "searchId") Long searchId) {
 
-        return ResponseEntity.ok(vocabularyBean.getCountries(searchId));
+        return ResponseEntity.ok(listBean.getCountries(searchId));
     }
 
     @RequestMapping(value = "/registration/checkLogin", method = RequestMethod.GET)
@@ -74,9 +74,9 @@ public class RegistrationController {
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String getRegistration(Model model) {
-        model.addAttribute("countries", vocabularyBean.getCountries());
-        model.addAttribute("genders", vocabularyBean.getGenders());
-        return "registration";
+        model.addAttribute("countries", listBean.getCountries());
+        model.addAttribute("genders", listBean.getGenders());
+        return "creation";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
@@ -100,22 +100,22 @@ public class RegistrationController {
             }
         } catch (ValidationException ex) {
             validationErrors.add("File is not an image");
-            model.addAttribute("countries", vocabularyBean.getCountries());
-            model.addAttribute("genders", vocabularyBean.getGenders());
+            model.addAttribute("countries", listBean.getCountries());
+            model.addAttribute("genders", listBean.getGenders());
             model.addAttribute("user", user);
             if (user.getCountry() != 0 && user.getCity() != 0)
-                model.addAttribute("city", vocabularyBean.getCity(user.getCity()));
-            return "registration";
+                model.addAttribute("city", listBean.getCity(user.getCity()));
+            return "creation";
         }
 
         if (validationErrors.size() > 0) {
-            model.addAttribute("countries", vocabularyBean.getCountries());
-            model.addAttribute("genders", vocabularyBean.getGenders());
+            model.addAttribute("countries", listBean.getCountries());
+            model.addAttribute("genders", listBean.getGenders());
             model.addAttribute("user", user);
             model.addAttribute("errors", validationErrors);
             if (user.getCountry() != 0 && user.getCity() != 0)
-                model.addAttribute("city", vocabularyBean.getCity(user.getCity()));
-            return "registration";
+                model.addAttribute("city", listBean.getCity(user.getCity()));
+            return "creation";
         }
         request.getSession().setAttribute("msg", "Please, check your email for instructions");
         return "redirect:/login";
@@ -124,8 +124,8 @@ public class RegistrationController {
     @RequestMapping(value = "/activate/{token}", method = RequestMethod.GET)
     public String setLanguages(@PathVariable("token") String token, HttpServletRequest request, Model model) {
         if (userBean.checkActivationToken(token)) {
-            List<Language> languages = vocabularyBean.getLanguages();
-            List<LanguageLevel> languageLevels = vocabularyBean.getLanguageLevels();
+            List<Language> languages = listBean.getLanguages();
+            List<LanguageLevel> languageLevels = listBean.getLanguageLevels();
             model.addAttribute("languages", languages);
             model.addAttribute("languageLevels", languageLevels);
             return "completeRegistration";

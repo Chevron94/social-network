@@ -9,9 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import socialnetwork.beans.AlbumBean;
 import socialnetwork.beans.UserBean;
-import socialnetwork.beans.VocabularyBean;
-import socialnetwork.dto.registration.LanguageRegistrationDto;
-import socialnetwork.dto.registration.UserRegistrationDto;
+import socialnetwork.beans.ListBean;
+import socialnetwork.dto.creation.LanguageRegistrationDto;
+import socialnetwork.dto.creation.UserRegistrationDto;
 import socialnetwork.entities.*;
 import socialnetwork.events.FriendEvent;
 import socialnetwork.exceptions.ObjectsNotFoundException;
@@ -47,7 +47,7 @@ public class UserBeanImpl implements UserBean {
     @Autowired
     private AlbumBean albumBean;
     @Autowired
-    private VocabularyBean vocabularyBean;
+    private ListBean listBean;
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
@@ -73,9 +73,9 @@ public class UserBeanImpl implements UserBean {
     public User registerUser(UserRegistrationDto userRegistrationDto, MultipartFile multipartFile, String baseUrl, List<String> errors) {
         if (validateUserDto(userRegistrationDto, ValidationMode.CREATE, errors)) {
             replaceSpecialSymbols(userRegistrationDto);
-            Country country = vocabularyBean.getCountry(userRegistrationDto.getCountry());
-            City city = vocabularyBean.getCity(userRegistrationDto.getCity());
-            Gender gender = vocabularyBean.getGender(userRegistrationDto.getGender());
+            Country country = listBean.getCountry(userRegistrationDto.getCountry());
+            City city = listBean.getCity(userRegistrationDto.getCity());
+            Gender gender = listBean.getGender(userRegistrationDto.getGender());
             if (country == null) {
                 errors.add("Country with id: " + userRegistrationDto.getCountry() + " doesn't exist");
             }
@@ -218,9 +218,9 @@ public class UserBeanImpl implements UserBean {
         if (languageLanguageLevelMap.isEmpty()) {
             errors.add("At least one pair Language - Language Level should exists");
         }
-        Country country = vocabularyBean.getCountry(userRegistrationDto.getCountry());
-        City city = vocabularyBean.getCity(userRegistrationDto.getCity());
-        Gender gender = vocabularyBean.getGender(userRegistrationDto.getGender());
+        Country country = listBean.getCountry(userRegistrationDto.getCountry());
+        City city = listBean.getCity(userRegistrationDto.getCity());
+        Gender gender = listBean.getGender(userRegistrationDto.getGender());
         if (country == null) {
             errors.add("Country with id: " + userRegistrationDto.getCountry() + " doesn't exist");
         }
@@ -519,8 +519,8 @@ public class UserBeanImpl implements UserBean {
             } else {
                 for (int i = 0; i < languageRegistrationDto.getLanguages().size(); i++) {
                     if (languageRegistrationDto.getLanguages().get(i) != null && languageRegistrationDto.getLanguageLevels().get(i) != null) {
-                        Language language = vocabularyBean.getLanguage(languageRegistrationDto.getLanguages().get(i));
-                        LanguageLevel languageLevel = vocabularyBean.getLanguageLevel(languageRegistrationDto.getLanguageLevels().get(i));
+                        Language language = listBean.getLanguage(languageRegistrationDto.getLanguages().get(i));
+                        LanguageLevel languageLevel = listBean.getLanguageLevel(languageRegistrationDto.getLanguageLevels().get(i));
                         if (language != null && languageLevel != null) {
                             languageLanguageLevelMap.put(language, languageLevel);
                         } else {

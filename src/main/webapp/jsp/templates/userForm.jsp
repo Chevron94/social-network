@@ -197,7 +197,7 @@
                         placeholder: "Select a city",
                         allowClear: true,
                         ajax: {
-                            url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/registration/citiesByCountry',
+                            url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/creation/citiesByCountry',
                             dataType: 'json',
                             type: "GET",
                             quietMillis: 250,

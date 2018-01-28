@@ -2,7 +2,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="socialnetwork.entities.City" %>
 <%@ page import="socialnetwork.entities.Gender" %>
-<%@ page import="socialnetwork.dto.registration.UserRegistrationDto" %>
+<%@ page import="socialnetwork.dto.creation.UserRegistrationDto" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%--
@@ -265,7 +265,7 @@
 
     $('#city').select2({
       ajax: {
-        url : window.location.protocol+'//'+window.location.hostname+':'+window.location.port+'/registration/citiesByCountry',
+        url : window.location.protocol+'//'+window.location.hostname+':'+window.location.port+'/creation/citiesByCountry',
         dataType:'json',
         type: "GET",
         quietMillis: 250,

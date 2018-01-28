@@ -58,6 +58,10 @@ public class User {
     @JsonIgnore
     private String token;
 
+    @Column(name = "TOKEN_CREATION_DATE")
+    @JsonIgnore
+    private Date tokenCreationDate;
+
     @Column(name = "ACTIVATION_TOKEN")
     @JsonIgnore
     private String activationToken;
@@ -108,7 +112,9 @@ public class User {
     @JsonIgnore
     private transient List<Album> albums = new ArrayList<>();
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @JsonIgnore
+    private transient List<Vocabulary> vocabularies = new ArrayList<>();
 
     public User() {
     }
@@ -302,6 +308,14 @@ public class User {
         this.token = token;
     }
 
+    public Date getTokenCreationDate() {
+        return tokenCreationDate;
+    }
+
+    public void setTokenCreationDate(Date tokenCreationDate) {
+        this.tokenCreationDate = tokenCreationDate;
+    }
+
     public Boolean getOnline() {
         return online;
     }
@@ -332,6 +346,14 @@ public class User {
 
     public void setRememberMeToken(String rememberMeToken) {
         this.rememberMeToken = rememberMeToken;
+    }
+
+    public List<Vocabulary> getVocabularies() {
+        return vocabularies;
+    }
+
+    public void setVocabularies(List<Vocabulary> vocabularies) {
+        this.vocabularies = vocabularies;
     }
 
     @Override

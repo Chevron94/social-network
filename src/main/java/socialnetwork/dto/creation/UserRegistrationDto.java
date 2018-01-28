@@ -1,7 +1,5 @@
-package socialnetwork.dto.registration;
+package socialnetwork.dto.creation;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 /**

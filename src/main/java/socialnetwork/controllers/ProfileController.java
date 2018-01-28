@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import socialnetwork.beans.AlbumBean;
 import socialnetwork.beans.UserBean;
-import socialnetwork.beans.VocabularyBean;
-import socialnetwork.dto.registration.UserRegistrationDto;
+import socialnetwork.beans.ListBean;
+import socialnetwork.dto.creation.UserRegistrationDto;
 import socialnetwork.entities.Album;
 import socialnetwork.entities.FriendRequest;
 import socialnetwork.entities.User;
@@ -32,7 +32,7 @@ public class ProfileController extends GenericController {
     private static final Logger LOGGER = LoggerFactory.getLogger(ProfileController.class);
 
     @Autowired
-    private VocabularyBean vocabularyBean;
+    private ListBean listBean;
     @Autowired
     private UserBean userBean;
     @Autowired
@@ -72,10 +72,10 @@ public class ProfileController extends GenericController {
             model.addAttribute("albums", albums);
             model.addAttribute("numberOfAlbums", albumBean.countAlbums(user.getId()));
             model.addAttribute("numberOfFriends", userBean.countFriends(user.getId()));
-            model.addAttribute("languages", vocabularyBean.getLanguages());
-            model.addAttribute("languageLevels", vocabularyBean.getLanguageLevels());
-            model.addAttribute("countries", vocabularyBean.getCountries());
-            model.addAttribute("genders", vocabularyBean.getGenders());
+            model.addAttribute("languages", listBean.getLanguages());
+            model.addAttribute("languageLevels", listBean.getLanguageLevels());
+            model.addAttribute("countries", listBean.getCountries());
+            model.addAttribute("genders", listBean.getGenders());
             return "profile";
         }
         return "forward:/404";

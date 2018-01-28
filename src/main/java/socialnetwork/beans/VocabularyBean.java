@@ -1,25 +1,24 @@
 package socialnetwork.beans;
 
-import socialnetwork.entities.*;
+import socialnetwork.dto.VocabularySearchDto;
+import socialnetwork.dto.creation.VocabularyCreationDto;
+import socialnetwork.dto.creation.VocabularyRecordCreationDto;
+import socialnetwork.entities.Vocabulary;
+import socialnetwork.entities.VocabularyRecord;
 
 import java.util.List;
 
 /**
- * Created by Roman on 20.08.2017.
+ * Created by Roman on 21.01.2018 11:40.
  */
 public interface VocabularyBean {
-    Continent getContinent(Long id);
-    List<Continent> getContinents();
-    Country getCountry(Long id);
-    List<Country> getCountries();
-    List<Country> getCountries(Long continentId);
-    List<Country> getCountriesWithUsers();
-    City getCity(Long id);
-    List<City> getCities(Long countryId, String name);
-    Language getLanguage(Long id);
-    List<Language> getLanguages();
-    LanguageLevel getLanguageLevel(Long id);
-    List<LanguageLevel> getLanguageLevels();
-    Gender getGender(Long id);
-    List<Gender> getGenders();
+    Vocabulary createVocabulary(VocabularyCreationDto vocabularyCreationDto);
+    List<Vocabulary> getVocabularies(Long userId);
+    List<Vocabulary> getVocabularies(VocabularySearchDto vocabularySearchDto);
+    Vocabulary getVocabulary(Long vocabularyId, Long userId);
+    void deleteVocabulary(Long userId, Long vocabularyId);
+    VocabularyRecord createVocabularyRecord(VocabularyRecordCreationDto creationDto);
+    VocabularyRecord updateVocabularyRecord(Long vocabularyRecordId, VocabularyRecordCreationDto creationDto);
+    List<VocabularyRecord> getVocabularyRecords(Long userId, Long vocabulary, String word, String translation);
+    void deleteVocabularyRecord(Long userId, Long vocabularyRecordId);
 }

@@ -30,6 +30,13 @@ public class Language {
     @JsonIgnore
     private transient List<LanguageUser> languageUsers = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "from")
+    @JsonIgnore
+    private transient List<Vocabulary> fromVocabularies = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "to")
+    @JsonIgnore
+    private transient List<Vocabulary> toVocabularies = new ArrayList<>();
 
 
     public Language() {
@@ -79,6 +86,22 @@ public class Language {
 
     public void setPicture(String picture) {
         this.picture = picture;
+    }
+
+    public List<Vocabulary> getFromVocabularies() {
+        return fromVocabularies;
+    }
+
+    public void setFromVocabularies(List<Vocabulary> fromVocabularies) {
+        this.fromVocabularies = fromVocabularies;
+    }
+
+    public List<Vocabulary> getToVocabularies() {
+        return toVocabularies;
+    }
+
+    public void setToVocabularies(List<Vocabulary> toVocabularies) {
+        this.toVocabularies = toVocabularies;
     }
 
     @Override

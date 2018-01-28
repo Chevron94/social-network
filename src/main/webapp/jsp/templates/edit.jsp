@@ -349,7 +349,7 @@
         $('#editViewer').on('shown.bs.modal', function () {
             $('#city').select2({
                 ajax: {
-                    url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/registration/citiesByCountry',
+                    url: window.location.protocol + '//' + window.location.hostname + ':' + window.location.port + '/creation/citiesByCountry',
                     dataType: 'json',
                     type: "GET",
                     quietMillis: 250,

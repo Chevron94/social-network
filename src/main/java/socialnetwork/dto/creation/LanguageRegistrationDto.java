@@ -1,4 +1,4 @@
-package socialnetwork.dto.registration;
+package socialnetwork.dto.creation;
 
 import java.util.List;
 

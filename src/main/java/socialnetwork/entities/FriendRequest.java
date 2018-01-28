@@ -15,11 +15,11 @@ public class FriendRequest
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "SENDER", nullable = false)
+    @JoinColumn(name = "SENDER_ID", nullable = false)
     private User sender;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "RECEIVER", nullable = false)
+    @JoinColumn(name = "RECEIVER_ID", nullable = false)
     private User receiver;
 
     @Column(name="CONFIRMED")

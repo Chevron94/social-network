@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import socialnetwork.beans.UserBean;
-import socialnetwork.beans.VocabularyBean;
+import socialnetwork.beans.ListBean;
 import socialnetwork.dto.UserDto;
 import socialnetwork.entities.User;
 import socialnetwork.helpers.UrlConstructor;
@@ -26,15 +26,15 @@ import java.util.Objects;
 public class PeopleController extends GenericController {
     private static final Logger LOGGER = LoggerFactory.getLogger(PeopleController.class);
     @Autowired
-    private VocabularyBean vocabularyBean;
+    private ListBean listBean;
     @Autowired
     private UserBean userBean;
 
     @RequestMapping(value = "/friends", method = RequestMethod.GET)
     public String friends(Model model, HttpServletRequest request) {
         Long idRequestUser = getUserId(request);
-        model.addAttribute("continents", vocabularyBean.getContinents());
-        model.addAttribute("languages", vocabularyBean.getLanguages());
+        model.addAttribute("continents", listBean.getContinents());
+        model.addAttribute("languages", listBean.getLanguages());
         model.addAttribute("idRequestUser", idRequestUser);
         return "friends";
     }
@@ -42,8 +42,8 @@ public class PeopleController extends GenericController {
     @RequestMapping(value = "/user{id}/friends", method = RequestMethod.GET)
     public String usersFriends(Model model, HttpServletRequest request, @PathVariable String id) {
         getUserId(request);
-        model.addAttribute("continents", vocabularyBean.getContinents());
-        model.addAttribute("languages", vocabularyBean.getLanguages());
+        model.addAttribute("continents", listBean.getContinents());
+        model.addAttribute("languages", listBean.getLanguages());
         model.addAttribute("idRequestUser", Long.valueOf(id));
         return "friends";
     }
@@ -51,8 +51,8 @@ public class PeopleController extends GenericController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String users(Model model, HttpServletRequest request) {
         Long idRequestUser = getUserId(request);
-        model.addAttribute("continents", vocabularyBean.getContinents());
-        model.addAttribute("languages", vocabularyBean.getLanguages());
+        model.addAttribute("continents", listBean.getContinents());
+        model.addAttribute("languages", listBean.getLanguages());
         model.addAttribute("idRequestUser", idRequestUser);
         return "users";
     }
