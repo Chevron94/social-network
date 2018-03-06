@@ -18,11 +18,6 @@ public class Constants {
     public static final String SMTP_HOST = "smtp.yandex.ru";
     public static final String DEFAULT_PHOTO = "/resources/images/system/no-photo.png";
 
-//    static {
-//        HOST_URL = System.getenv().get("HOST_URL");
-//        FILES_PATH = System.getenv().get("FILES_PATH");
-//        EMAIL_LOGIN = System.getenv().get("EMAIL_LOGIN");
-//        EMAIL_PASSWORD = System.getenv().get("EMAIL_PASSWORD");
-//        SMTP_HOST = System.getenv().get("SMTP_HOST");
-//        }
+    public Constants() {
+    }
 }

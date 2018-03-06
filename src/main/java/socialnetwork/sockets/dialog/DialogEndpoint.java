@@ -39,7 +39,7 @@ public class DialogEndpoint {
 
     @OnOpen
     public void open(final Session session) {
-
+        //nothing to do is required
     }
 
     @OnMessage
@@ -55,7 +55,7 @@ public class DialogEndpoint {
                 }
                 sessions.setMessageSession(session);
             } else {
-                if (chatMessage.getDialogId() != null && dialogBean.getDialog(chatMessage.getSenderId(), Long.valueOf(chatMessage.getDialogId())) != null) {
+                if (chatMessage.getDialogId() != null && dialogBean.getDialog(chatMessage.getSenderId(), chatMessage.getDialogId()) != null) {
                     if (chatMessage.getMessageText().equals("")) {
                         dialogBean.readMessages(chatMessage.getSenderId(), chatMessage.getDialogId());
                     } else {
@@ -87,7 +87,7 @@ public class DialogEndpoint {
                 }
             }
         } catch (EncodeException | IOException ignored) {
-
+            LOGGER.warn("ex: ", ignored);
         }
     }
 
@@ -111,12 +111,12 @@ public class DialogEndpoint {
                 }
             }
         } catch (EncodeException | IOException ignored) {
-
+            LOGGER.warn("ex: ", ignored);
         }
     }
 
     @OnClose
     public void close(final Session session) {
-
+        //nothing to do is required
     }
 }

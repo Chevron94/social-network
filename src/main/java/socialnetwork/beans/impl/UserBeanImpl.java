@@ -287,6 +287,11 @@ public class UserBeanImpl implements UserBean {
     }
 
     @Override
+    public User getUserByToken(String token) {
+        return userRepository.findUserByToken(token);
+    }
+
+    @Override
     @Transactional
     public void uploadNewProfilePhoto(Long userId, MultipartFile multipartFile) {
         User user = userRepository.findOne(userId);
@@ -491,7 +496,7 @@ public class UserBeanImpl implements UserBean {
                 }
             }
         } else if (validationMode.equals(ValidationMode.EDIT)) {
-            if (userRegistrationDto.getLanguages().size() == 0 || userRegistrationDto.getLanguageLevels().size() == 0) {
+            if (userRegistrationDto.getLanguages().isEmpty() || userRegistrationDto.getLanguageLevels().isEmpty()) {
                 validationErrors.add("At least one pair Language - Language Level should exists");
             } else {
                 if (userRegistrationDto.getLanguages().size() != userRegistrationDto.getLanguageLevels().size()) {
@@ -511,7 +516,7 @@ public class UserBeanImpl implements UserBean {
 
     private Map<Language, LanguageLevel> validateLanguageDtoAndFillLanguageMap(LanguageRegistrationDto languageRegistrationDto, List<String> validationErrors) {
         Map<Language, LanguageLevel> languageLanguageLevelMap = new HashMap<>();
-        if (languageRegistrationDto.getLanguages().size() == 0 || languageRegistrationDto.getLanguageLevels().size() == 0) {
+        if (languageRegistrationDto.getLanguages().isEmpty() || languageRegistrationDto.getLanguageLevels().isEmpty()) {
             validationErrors.add("At least one pair Language - Language Level should exists");
         } else {
             if (languageRegistrationDto.getLanguages().size() != languageRegistrationDto.getLanguageLevels().size()) {
@@ -536,7 +541,7 @@ public class UserBeanImpl implements UserBean {
                 }
             }
         }
-        if (validationErrors.size() == 0) {
+        if (validationErrors.isEmpty()) {
             return languageLanguageLevelMap;
         } else {
             return new HashMap<>();

@@ -48,7 +48,7 @@ public class AlbumController extends GenericController {
         getUserId(request);
         Long idRequestUser = Long.valueOf(id);
         List<Album> albums = albumBean.getAlbums(idRequestUser, 0, 5);
-        if (albums.size() == 0) {
+        if (albums.isEmpty()) {
             return "404";
         }
         model.addAttribute("requestUser", userBean.getUser(idRequestUser));

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 import socialnetwork.beans.CapchaBean;
 
 import java.net.URI;
@@ -20,17 +19,36 @@ import java.util.regex.Pattern;
 @Component
 public class CapchaBeanImpl implements CapchaBean {
 
+    enum ErrorCode {
+        MISSING_SECRET, INVALID_SECRET,
+        MISSING_RESPONSE, INVALID_RESPONSE;
+
+        private static Map<String, ErrorCode> errorsMap = new HashMap<String, ErrorCode>(4);
+
+        static {
+            errorsMap.put("missing-input-secret", MISSING_SECRET);
+            errorsMap.put("invalid-input-secret", INVALID_SECRET);
+            errorsMap.put("missing-input-response", MISSING_RESPONSE);
+            errorsMap.put("invalid-input-response", INVALID_RESPONSE);
+        }
+
+        @JsonCreator
+        public static ErrorCode forValue(String value) {
+            return errorsMap.get(value.toLowerCase());
+        }
+    }
+
     @Autowired
     @Qualifier("restTemplate")
     private RestOperations restOperations;
 
-    private static Pattern RESPONSE_PATTERN = Pattern.compile("[A-Za-z0-9_-]+");
+    private static final Pattern RESPONSE_PATTERN = Pattern.compile("[A-Za-z0-9_-]+");
 
     private static final String CAPCHA_SECRET = "6LexPy4UAAAAAF9eJZcc0tN8qeBPSCBpFN7nBold";
 
     @Override
     public Boolean processResponse(String response) {
-        if(!responseSanityCheck(response)) {
+        if (!responseSanityCheck(response)) {
             return false;
         }
 
@@ -72,37 +90,18 @@ public class CapchaBeanImpl implements CapchaBean {
         @JsonIgnore
         public boolean hasClientError() {
             ErrorCode[] errors = getErrorCodes();
-            if(errors == null) {
+            if (errors == null) {
                 return false;
             }
-            for(ErrorCode error : errors) {
-                switch(error) {
-                    case InvalidResponse:
-                    case MissingResponse:
-                        return true;
+            for (ErrorCode error : errors) {
+                if (ErrorCode.INVALID_RESPONSE.equals(error)
+                        || ErrorCode.MISSING_RESPONSE.equals(error)) {
+                    return true;
                 }
             }
             return false;
         }
 
-        enum ErrorCode {
-            MissingSecret,     InvalidSecret,
-            MissingResponse,   InvalidResponse;
-
-            private static Map<String, ErrorCode> errorsMap = new HashMap<String, ErrorCode>(4);
-
-            static {
-                errorsMap.put("missing-input-secret",   MissingSecret);
-                errorsMap.put("invalid-input-secret",   InvalidSecret);
-                errorsMap.put("missing-input-response", MissingResponse);
-                errorsMap.put("invalid-input-response", InvalidResponse);
-            }
-
-            @JsonCreator
-            public static ErrorCode forValue(String value) {
-                return errorsMap.get(value.toLowerCase());
-            }
-        }
 
         public boolean isSuccess() {
             return success;

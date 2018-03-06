@@ -13,15 +13,16 @@ import java.text.SimpleDateFormat;
 public class DialogMessageEncoder implements Encoder.Text<MessageDto> {
     @Override
     public void init(final EndpointConfig config) {
+        //nothing to do is required
     }
 
     @Override
     public void destroy() {
+        //nothing to do is required
     }
 
     @Override
     public String encode(final MessageDto chatMessage) throws EncodeException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
         if (!chatMessage.getMessageText().equals("")) {
             return Json.createObjectBuilder()
                     .add("messageText", chatMessage.getMessageText())

@@ -20,10 +20,12 @@ public class DialogMessageDecoder implements Decoder.Text<MessageDto> {
 
     @Override
     public void init(final EndpointConfig config) {
+        //nothing to do is required
     }
 
     @Override
     public void destroy() {
+        //nothing to do is required
     }
 
     @Override

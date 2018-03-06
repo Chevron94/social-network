@@ -1,9 +1,9 @@
 package socialnetwork.helpers;
 
 
-import org.slf4j.Logger;import org.slf4j.LoggerFactory;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.imgscalr.Scalr;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import socialnetwork.exceptions.ValidationException;
 
@@ -27,22 +27,21 @@ public class FileHelper {
             InputStream inputStream = photo.getInputStream();
             BufferedImage image = ImageIO.read(inputStream);
             File directory = new File(FILES_PATH + File.separator + userId + File.separator + albumId);
-            if (!directory.exists()) {
-                if (!directory.mkdirs()) {
-                    throw new RuntimeException("Failed to create directory " + directory.getPath());
-                }
+            if (!directory.exists() && !directory.mkdirs()) {
+                LOGGER.error("Failed to create directory " + directory.getPath());
+                throw new RuntimeException("Failed to create directory " + directory.getPath());
             }
             try {
                 File file = File.createTempFile(UUID.randomUUID().toString(), ".jpg", directory);
                 Integer height = image.getHeight();
                 Integer width = image.getWidth();
-                float ratio = (float)height/(float)width;
-                if (ratio>1) {
-                    image = Scalr.resize(image, Scalr.Method.QUALITY, Math.round(960f/ratio), 960);
+                float ratio = (float) height / (float) width;
+                if (ratio > 1) {
+                    image = Scalr.resize(image, Scalr.Method.QUALITY, Math.round(960f / ratio), 960);
                 } else {
-                    image = Scalr.resize(image, Scalr.Method.QUALITY, 1280, Math.round(1280f*ratio));
+                    image = Scalr.resize(image, Scalr.Method.QUALITY, 1280, Math.round(1280f * ratio));
                 }
-                ImageIO.write(image,"jpg", file);
+                ImageIO.write(image, "jpg", file);
                 return userId + "/" + albumId + "/" + file.getName();
             } catch (IOException e) {
                 LOGGER.error("Can't read an image, ex: ", e);
@@ -57,7 +56,7 @@ public class FileHelper {
         try {
             return new FileInputStream(FILES_PATH + File.separator + path);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LOGGER.error("ex: ", e);
             throw new RuntimeException(e);
         }
     }

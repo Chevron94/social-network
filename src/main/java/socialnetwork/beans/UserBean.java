@@ -20,6 +20,7 @@ public interface UserBean {
     User updateUser(Long userId, UserRegistrationDto userRegistrationDto, List<String> errors);
     User getUser(Long userId);
     User getUser(String login);
+    User getUserByToken(String token);
     Boolean checkLogin(String login);
     Boolean checkEmail(String email);
     void uploadNewProfilePhoto(Long userId, MultipartFile multipartFile);

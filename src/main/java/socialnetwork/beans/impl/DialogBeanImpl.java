@@ -1,5 +1,6 @@
 package socialnetwork.beans.impl;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +21,6 @@ import socialnetwork.repositories.DialogRepository;
 import socialnetwork.repositories.MessageRepository;
 import socialnetwork.repositories.UserDialogRepository;
 import socialnetwork.repositories.UserRepository;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.*;
 
