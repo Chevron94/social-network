@@ -1,5 +1,6 @@
 package socialnetwork;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,9 +8,12 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import socialnetwork.entities.*;
 import socialnetwork.repositories.*;
 
+import javax.sql.DataSource;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -27,6 +31,24 @@ import java.util.Locale;
 @EnableScheduling
 @ComponentScan
 public class HellofromApplication extends SpringBootServletInitializer {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private DataSource dataSource;
+
+    @Autowired
+    public void authenticationManager(AuthenticationManagerBuilder builder) throws Exception {
+        builder.
+                jdbcAuthentication()
+                .usersByUsernameQuery("select login as username, password, confirmed as enabled from network_user where login = ?")
+                .authoritiesByUsernameQuery("select login as username, " +
+                        "CASE WHEN role_id = 1 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END as role " +
+                        "from network_user where login=?")
+                .dataSource(dataSource)
+                .passwordEncoder(bCryptPasswordEncoder);
+    }
+
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(HellofromApplication.class, args);
         fillGenders(context);

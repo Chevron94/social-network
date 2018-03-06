@@ -14,6 +14,8 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long>, UserRepositoryCustom {
     User findUserByEmailAndConfirmedIsTrue(String email);
     User findUserByEmail(String email);
+    @Query("select u from User u where u.confirmed = true and (u.login = :login or u.email = :login) ")
+    User findUserByLoginOrEmail(String login);
     User findUserByLoginAndPasswordAndConfirmedIsTrue(String login, String password);
     User findUserByLogin(String login);
     User findUserByToken(String token);
