@@ -1,6 +1,8 @@
 package socialnetwork.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,6 +12,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import socialnetwork.entities.oauth.ClientDetails;
+import socialnetwork.repositories.ClientDetailsRepository;
 
 import javax.sql.DataSource;
 
@@ -24,7 +30,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DataSource dataSource;
     @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private ClientDetailsRepository clientDetailsRepository;
+
+    @Value(value = "${client-id}")
+    private String clientId;
+    @Value(value = "${client-secret}")
+    private String clientSecret;
+    @Value(value = "${grant-types}")
+    private String grantTypes;
+    @Value(value = "${scope}")
+    private String scope;
+    @Value(value = "${redirect-url}")
+    private String redirectUrl;
+    @Value(value = "${resource-ids}")
+    private String resourceIds;
+    @Value(value = "${role}")
+    private String role;
+    @Value(value = "${access-token-validity-seconds}")
+    private Integer accessTokenValiditySeconds;
+    @Value(value = "${refresh-token-validity-seconds}")
+    private Integer refreshTokenValiditySeconds;
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -37,19 +62,34 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints.authenticationManager(authenticationManager)
-                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                .tokenStore(tokenStore());
 
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory().withClient("android-client")
-                .authorizedGrantTypes("client-credentials", "password","refresh_token")
-                .authorities("ROLE_USER", "ROLE_ADMIN")
-                .scopes("read", "write", "trust")
-                .resourceIds("oauth2-resource")
-                .accessTokenValiditySeconds(5000)
-                .secret("android-secret").refreshTokenValiditySeconds(50000);
+        clients.jdbc(dataSource);
+
+        ClientDetails clientDetails = clientDetailsRepository.findOne(clientId);
+        if (clientDetails == null) {
+            clientDetails = new ClientDetails();
+            clientDetails.setClientId(clientId);
+            clientDetails.setClientSecret(clientSecret);
+            clientDetails.setAccessTokenValidity(accessTokenValiditySeconds);
+            clientDetails.setRefreshTokenValidity(refreshTokenValiditySeconds);
+            clientDetails.setAuthorizedGrantTypes(grantTypes);
+            clientDetails.setResourceIds(resourceIds);
+            clientDetails.setScope(scope);
+            clientDetails.setAuthorities(role);
+            clientDetails.setWebServerRedirectUri(redirectUrl);
+            clientDetailsRepository.save(clientDetails);
+        }
+    }
+
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(dataSource);
     }
 
 }

@@ -3,7 +3,13 @@ package socialnetwork.beans.impl;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,6 +29,7 @@ import socialnetwork.repositories.FriendRequestRepository;
 import socialnetwork.repositories.LanguageUserRepository;
 import socialnetwork.repositories.UserRepository;
 
+import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -52,6 +59,9 @@ public class UserBeanImpl implements UserBean {
     private BCryptPasswordEncoder passwordEncoder;
     @Autowired
     private ApplicationEventPublisher publisher;
+
+    @Autowired
+    private TokenStore tokenStore;
 
     public enum ValidationMode {
         CREATE,
@@ -288,7 +298,9 @@ public class UserBeanImpl implements UserBean {
 
     @Override
     public User getUserByToken(String token) {
-        return userRepository.findUserByToken(token);
+        OAuth2Authentication authentication = tokenStore.readAuthentication(token);
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+        return userRepository.findUserByLogin(user.getUsername());
     }
 
     @Override

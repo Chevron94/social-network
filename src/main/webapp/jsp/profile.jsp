@@ -160,15 +160,23 @@
                 %>
                 <%
                     for (Album album : albums) {
-                        if (album.getPhotos() != null && album.getPhotos().size() > 0) {
+
                 %>
                 <div class="row" style="margin-top: 1%; margin-bottom: 1%;">
                     <div class="col-xs-12">
-                        <div class="row">
+                        <div style="border-style: double;" class="row">
+                            <%  if (album.getPhotos() != null && album.getPhotos().size() > 0) {%>
                             <div class="col-xs-12 img_wrap_big btn"
                                  style="background-image: url(<%=album.getPhotos().get(0).getPhotoUrl()%>)"
                                  data-toggle="modal" data-target="#photoViewer"
-                                 onclick="showPhoto(<%=album.getPhotos().get(0).getId()%>,'<%=album.getPhotos().get(0).getPhotoUrl()%>',<%=user.getId()%>,<%=album.getId()%>,'<%=simpleDateFormat.format(album.getPhotos().get(0).getUploaded())%>',0)"></div>
+                                 onclick="showPhoto(<%=album.getPhotos().get(0).getId()%>,'<%=album.getPhotos().get(0).getPhotoUrl()%>',<%=user.getId()%>,<%=album.getId()%>,'<%=simpleDateFormat.format(album.getPhotos().get(0).getUploaded())%>',0)">
+                            </div>
+                            <% } else { %>
+                            <div class="col-xs-12 btn"
+                                onclick="location.href = '/albums/<%=album.getId()%>'">
+                                 No Photos yet
+                            </div>
+                            <% } %>
                         </div>
                         <div class="row">
                             <a href="/albums/<%=album.getId()%>"><p
@@ -179,7 +187,6 @@
 
                 </div>
                 <%
-                        }
                     }
                 %>
 

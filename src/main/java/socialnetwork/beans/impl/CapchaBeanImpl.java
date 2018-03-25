@@ -23,7 +23,7 @@ public class CapchaBeanImpl implements CapchaBean {
         MISSING_SECRET, INVALID_SECRET,
         MISSING_RESPONSE, INVALID_RESPONSE;
 
-        private static Map<String, ErrorCode> errorsMap = new HashMap<String, ErrorCode>(4);
+        private static Map<String, ErrorCode> errorsMap = new HashMap<>(4);
 
         static {
             errorsMap.put("missing-input-secret", MISSING_SECRET);
