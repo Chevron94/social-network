@@ -90,7 +90,7 @@ public class AlbumBeanImpl implements AlbumBean {
         if (!album.getUser().getId().equals(userId)) {
             throw new AccessDeniedException("User with id: " + userId + "isn't owner of the album with id: " + albumId);
         }
-        photoRepository.delete(photoRepository.countPhotosByAlbum_Id(albumId));
+        photoRepository.delete(photoRepository.findPhotosByAlbum_IdOrderByUploadedDesc(albumId, new PageRequest(0, Integer.MAX_VALUE)));
         albumRepository.delete(albumId);
     }
 

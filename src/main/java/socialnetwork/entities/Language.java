@@ -26,17 +26,17 @@ public class Language {
     @Column(name = "PICTURE")
     private String picture;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "language")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "language", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<LanguageUser> languageUsers = new ArrayList<>();
+    private List<LanguageUser> languageUsers = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "from")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "from", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Vocabulary> fromVocabularies = new ArrayList<>();
+    private List<Vocabulary> fromVocabularies = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "to")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "to", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Vocabulary> toVocabularies = new ArrayList<>();
+    private List<Vocabulary> toVocabularies = new ArrayList<>();
 
 
     public Language() {

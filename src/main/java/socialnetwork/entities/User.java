@@ -88,33 +88,33 @@ public class User {
 
     
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<FriendRequest> senders = new ArrayList<>();
+    private List<FriendRequest> senders = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<FriendRequest> receivers = new ArrayList<>();
+    private List<FriendRequest> receivers = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<LanguageUser> languageUsers = new ArrayList<>();
+    private List<LanguageUser> languageUsers = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Message> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<UserDialog> userDialogs = new ArrayList<>();
+    private List<UserDialog> userDialogs = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Album> albums = new ArrayList<>();
+    private List<Album> albums = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Vocabulary> vocabularies = new ArrayList<>();
+    private List<Vocabulary> vocabularies = new ArrayList<>();
 
     public User() {
     }

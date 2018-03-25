@@ -2,8 +2,10 @@ package socialnetwork.helpers;
 
 import socialnetwork.dto.AlbumDto;
 import socialnetwork.dto.PhotoDto;
+import socialnetwork.dto.VocabularyDto;
 import socialnetwork.entities.Album;
 import socialnetwork.entities.Photo;
+import socialnetwork.entities.Vocabulary;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,14 @@ public class Converters {
         List<PhotoDto> result = new ArrayList<>();
         for (Photo photo : photos) {
             result.add(new PhotoDto(photo));
+        }
+        return result;
+    }
+
+    public static List<VocabularyDto> convertToVocabularyDtos(List<Vocabulary> vocabularies) {
+        List<VocabularyDto> result = new ArrayList<>();
+        for (Vocabulary vocabulary : vocabularies) {
+            result.add(new VocabularyDto(vocabulary));
         }
         return result;
     }

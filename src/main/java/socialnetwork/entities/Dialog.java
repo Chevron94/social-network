@@ -27,13 +27,13 @@ public class Dialog {
     @Column(name = "IS_PRIVATE")
     private Boolean isPrivate;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dialog")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dialog", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Message> messages = new ArrayList<>();
+    private List<Message> messages = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dialog")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "dialog", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<UserDialog> userDialogs = new ArrayList<>();
+    private List<UserDialog> userDialogs = new ArrayList<>();
 
 
 

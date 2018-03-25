@@ -18,6 +18,7 @@ public interface UserBean {
     Boolean activateUser(String token, List<String> validationErrors);
     Boolean activateUser(String token, LanguageRegistrationDto languageRegistrationDto, List<String> validationErrors);
     User updateUser(Long userId, UserRegistrationDto userRegistrationDto, List<String> errors);
+    void deleteUser(Long userId);
     User getUser(Long userId);
     User getUser(String login);
     User getUserByToken(String token);

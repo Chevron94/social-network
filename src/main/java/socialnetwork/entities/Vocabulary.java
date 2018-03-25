@@ -29,9 +29,9 @@ public class Vocabulary {
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vocabulary")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "vocabulary", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<VocabularyRecord> records = new ArrayList<>();
+    private List<VocabularyRecord> records = new ArrayList<>();
 
     public Vocabulary() {
     }

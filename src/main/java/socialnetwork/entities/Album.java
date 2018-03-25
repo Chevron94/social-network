@@ -30,9 +30,9 @@ public class Album {
 
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "album", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Photo> photos = new ArrayList<>();
+    private List<Photo> photos = new ArrayList<>();
 
     public Album() {
     }

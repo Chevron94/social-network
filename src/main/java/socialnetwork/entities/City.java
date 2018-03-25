@@ -26,9 +26,9 @@ public class City {
 
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
 
 

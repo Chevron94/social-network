@@ -37,9 +37,9 @@ public class Message {
 
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "message")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "message", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<File> files = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 
 
 

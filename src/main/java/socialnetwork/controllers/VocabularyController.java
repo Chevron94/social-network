@@ -19,6 +19,7 @@ import socialnetwork.entities.VocabularyRecord;
 import socialnetwork.exceptions.AccessDeniedException;
 import socialnetwork.exceptions.ObjectsNotFoundException;
 import socialnetwork.exceptions.ValidationException;
+import socialnetwork.helpers.Converters;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class VocabularyController extends GenericController {
     public String getAllVocabularies(HttpServletRequest request, Model model) {
         Long userId = getUserId(request);
         List<Vocabulary> vocabularies = vocabularyBean.getVocabularies(userId);
-        model.addAttribute("vocabularies", convertToVocabularyDtos(vocabularies));
+        model.addAttribute("vocabularies", Converters.convertToVocabularyDtos(vocabularies));
         return "vocabularies";
     }
 
@@ -76,7 +77,7 @@ public class VocabularyController extends GenericController {
     public ResponseEntity getVocabularies(@RequestParam(value = "from", required = false) Long from, @RequestParam(value = "to", required = false) Long to, HttpServletRequest request){
         Long userId = getUserId(request);
         VocabularySearchDto vocabularySearchDto = new VocabularySearchDto(userId, from, to);
-        return ResponseEntity.ok(convertToVocabularyDtos(vocabularyBean.getVocabularies(vocabularySearchDto)));
+        return ResponseEntity.ok(Converters.convertToVocabularyDtos(vocabularyBean.getVocabularies(vocabularySearchDto)));
     }
 
     @RequestMapping(value = "/vocabulary/{id}", method = RequestMethod.DELETE)

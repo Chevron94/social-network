@@ -24,7 +24,7 @@ public class LanguageLevel {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "languageLevel")
     @JsonIgnore
-    private transient List<LanguageUser> languageUsers = new ArrayList<>();
+    private List<LanguageUser> languageUsers = new ArrayList<>();
 
 
 

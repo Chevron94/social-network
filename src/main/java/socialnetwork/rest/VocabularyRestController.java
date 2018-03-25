@@ -18,6 +18,7 @@ import socialnetwork.entities.VocabularyRecord;
 import socialnetwork.exceptions.AccessDeniedException;
 import socialnetwork.exceptions.ObjectsNotFoundException;
 import socialnetwork.exceptions.ValidationException;
+import socialnetwork.helpers.Converters;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class VocabularyRestController extends GenericAPIController {
     public ResponseEntity getVocabularies(@RequestParam(value = "from", required = false) Long from, @RequestParam(value = "to", required = false) Long to, HttpServletRequest request) {
         User user = getUser(request);
         VocabularySearchDto vocabularySearchDto = new VocabularySearchDto(user.getId(), from, to);
-        return ResponseEntity.ok(convertToVocabularyDtos(vocabularyBean.getVocabularies(vocabularySearchDto)));
+        return ResponseEntity.ok(Converters.convertToVocabularyDtos(vocabularyBean.getVocabularies(vocabularySearchDto)));
     }
 
     @RequestMapping(value = "/{vocabularyId}", method = RequestMethod.DELETE)
@@ -125,12 +126,4 @@ public class VocabularyRestController extends GenericAPIController {
         }
     }
 
-    //Create converters helper
-    private List<VocabularyDto> convertToVocabularyDtos(List<Vocabulary> vocabularies) {
-        List<VocabularyDto> result = new ArrayList<>();
-        for (Vocabulary vocabulary : vocabularies) {
-            result.add(new VocabularyDto(vocabulary));
-        }
-        return result;
-    }
 }

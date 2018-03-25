@@ -33,13 +33,13 @@ public class Country
 
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<City> cities = new ArrayList<>();
+    private List<City> cities = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "country")
     @JsonIgnore
-    private transient List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
 
 

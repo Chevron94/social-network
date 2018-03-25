@@ -280,6 +280,11 @@ public class UserBeanImpl implements UserBean {
     }
 
     @Override
+    public void deleteUser(Long userId) {
+        userRepository.delete(userId);
+    }
+
+    @Override
     public User getUser(Long userId) {
         User user = userRepository.findOne(userId);
         if (user == null) {

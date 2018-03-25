@@ -1,8 +1,6 @@
 package socialnetwork.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
-import org.hibernate.annotations.CascadeType;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -26,10 +24,9 @@ public class Continent {
 
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "continent")
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "continent", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private transient List<Country> countries = new ArrayList<>();
+    private List<Country> countries = new ArrayList<>();
 
 
 
