@@ -94,7 +94,7 @@ public class UsersAPIController extends GenericAPIController{
         }
     }
 
-    @RequestMapping(method = RequestMethod.PUT)
+    @RequestMapping(method = RequestMethod.DELETE)
     public @ResponseBody
     ResponseEntity deleteUser(HttpServletRequest request){
         User user = getUser(request);
