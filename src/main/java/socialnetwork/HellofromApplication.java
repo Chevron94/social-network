@@ -1,6 +1,9 @@
 package socialnetwork;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import socialnetwork.entities.*;
 import socialnetwork.repositories.*;
+import socialnetwork.simulation.Simulation;
 
 import javax.sql.DataSource;
 import java.io.BufferedReader;
@@ -31,6 +35,10 @@ import java.util.Locale;
 @EnableScheduling
 @ComponentScan
 public class HellofromApplication extends SpringBootServletInitializer {
+    private static final Logger LOGGER = LoggerFactory.getLogger(HellofromApplication.class);
+
+    private static final Boolean simulate = true;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -55,6 +63,9 @@ public class HellofromApplication extends SpringBootServletInitializer {
         fillLanguages(context);
         fillLanguageLevels(context);
         fillGeography(context);
+        if (simulate){
+            doSimulation(context);
+        }
     }
 
     private static void fillGenders(ConfigurableApplicationContext context) {
@@ -64,6 +75,7 @@ public class HellofromApplication extends SpringBootServletInitializer {
             genders.add(new Gender("Male"));
             genders.add(new Gender("Female"));
             genderRepository.save(genders);
+            LOGGER.info("Filling genders complete");
         }
     }
 
@@ -127,20 +139,21 @@ public class HellofromApplication extends SpringBootServletInitializer {
                     }
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception ex) {
+                LOGGER.error("Ex: ", ex);
             } finally {
                 try {
                     if (br != null) br.close();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    LOGGER.error("Ex: ", ex);
                 }
             }
-
             for (String countryCode : locales) {
                 Locale obj = new Locale("", countryCode);
+                if (countriesAndContinents.get(obj.getCountry()) == null) {
+                    continue;
+                }
                 code = countriesAndContinents.get(obj.getCountry()).trim();
-
                 switch (code) {
                     case "EU":
                         country = new Country(obj.getDisplayCountry(Locale.ENGLISH), "/resources/images/flags/" + obj.getCountry().toLowerCase() + ".png", europe);
@@ -168,14 +181,16 @@ public class HellofromApplication extends SpringBootServletInitializer {
                     city = new City(country.getName(), country);
                     cityRepository.save(city);
                 } else {
+                    List<City> cities = new ArrayList<>();
                     for (String s : citiesAndCountries.get(fips)) {
                         city = new City(s, country);
-                        cityRepository.save(city);
+                        cities.add(city);
                     }
+                    cityRepository.save(cities);
                 }
-
-
+                LOGGER.info("Filling cities for {} complete", country.getName());
             }
+            LOGGER.info("Filling geography complete");
         }
     }
 
@@ -192,6 +207,7 @@ public class HellofromApplication extends SpringBootServletInitializer {
             languageLevels.add(new LanguageLevel("Proficiency"));
             languageLevels.add(new LanguageLevel("Native Speaker"));
             languageLevelRepository.save(languageLevels);
+            LOGGER.info("Filling language levels complete");
         }
     }
 
@@ -215,9 +231,10 @@ public class HellofromApplication extends SpringBootServletInitializer {
                 try {
                     if (br != null) br.close();
                 } catch (IOException ex) {
-                    ex.printStackTrace();
+                    LOGGER.error("ex: ", ex);
                 }
             }
+            LOGGER.info("Filling languages complete");
         }
     }
 
@@ -227,4 +244,8 @@ public class HellofromApplication extends SpringBootServletInitializer {
         return resource == null ? "" : resource.getFile();
     }
 
+    private static void doSimulation(ConfigurableApplicationContext context){
+        Simulation simulation = context.getBean(Simulation.class);
+        simulation.simulate(false);
+    }
 }

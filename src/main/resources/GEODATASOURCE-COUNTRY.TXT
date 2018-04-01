@@ -104,7 +104,6 @@ GY	GY	.gy	Guyana
 GZ	-	-	Gaza Strip
 HA	HT	.ht	Haiti
 HK	HK	.hk	Hong Kong
-HM	HM	.hm	Heard Island and McDonald Islands
 HO	HN	.hn	Honduras
 HR	HR	.hr	Croatia
 HU	HU	.hu	Hungary
@@ -140,7 +139,6 @@ LG	LV	.lv	Latvia
 LH	LT	.lt	Lithuania
 LI	LR	.lr	Liberia
 LO	SK	.sk	Slovakia
--	UM	.us	United States Minor Outlying Islands
 LS	LI	.li	Liechtenstein
 LT	LS	.ls	Lesotho
 LU	LU	.lu	Luxembourg
@@ -168,7 +166,6 @@ MY	MY	.my	Malaysia
 MZ	MZ	.mz	Mozambique
 NC	NC	.nc	New Caledonia
 NE	NU	.nu	Niue
-NF	NF	.nf	Norfolk Island
 NG	NE	.ne	Niger
 NH	VU	.vu	Vanuatu
 NI	NG	.ng	Nigeria

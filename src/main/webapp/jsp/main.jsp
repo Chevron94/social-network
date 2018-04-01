@@ -25,6 +25,7 @@
                 <li>have very interesting conversations with users from your, or another countries!</li>
             </h3>
         <br>
+        <h3>It's time to start making new friends! <a href="/registration">Join now!</a> Already with us? <a href="/login">Login!</a> </h3>
         <h3>Just now you can meet users from &hellip;</h3>
         <%for(int i = 0; 6*i<countries.size(); i++){
         %>
@@ -41,7 +42,6 @@
         </div>
         <%
         }%>
-        <h3>It's time to start making new friends! <a href="/registration">Join now!</a> Already with us? <a href="/login">Login!</a> </h3>
     </div>
 </body>
 </html>

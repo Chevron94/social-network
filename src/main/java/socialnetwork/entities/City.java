@@ -10,7 +10,9 @@ import java.util.List;
  * Created by roman on 13.09.15.
  */
 @Entity
-@Table(name="CITY")
+@Table(name="CITY", indexes = {
+        @Index(columnList = "country_id,name", name = "name_city_hidx")
+})
 public class City {
     @Id
     @Column(name="ID")
