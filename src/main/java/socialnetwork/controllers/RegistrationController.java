@@ -76,7 +76,7 @@ public class RegistrationController {
     public String getRegistration(Model model) {
         model.addAttribute("countries", listBean.getCountries());
         model.addAttribute("genders", listBean.getGenders());
-        return "creation";
+        return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)

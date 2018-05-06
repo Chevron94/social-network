@@ -30,14 +30,7 @@ public class PeopleController extends GenericController {
     @Autowired
     private UserBean userBean;
 
-    @RequestMapping(value = "/friends", method = RequestMethod.GET)
-    public String friends(Model model, HttpServletRequest request) {
-        Long idRequestUser = getUserId(request);
-        model.addAttribute("continents", listBean.getContinents());
-        model.addAttribute("languages", listBean.getLanguages());
-        model.addAttribute("idRequestUser", idRequestUser);
-        return "friends";
-    }
+
 
     @RequestMapping(value = "/user{id}/friends", method = RequestMethod.GET)
     public String usersFriends(Model model, HttpServletRequest request, @PathVariable String id) {
@@ -60,7 +53,14 @@ public class PeopleController extends GenericController {
 
     /**
      * КОНТРОЛЛЕРЫ ЗАПРОСОВ
-     **/
+     **/ @RequestMapping(value = "/friends", method = RequestMethod.GET)
+    public String friends(Model model, HttpServletRequest request) {
+        Long idRequestUser = getUserId(request);
+        model.addAttribute("continents", listBean.getContinents());
+        model.addAttribute("languages", listBean.getLanguages());
+        model.addAttribute("idRequestUser", idRequestUser);
+        return "friends";
+    }
     @RequestMapping(value = "/people/sendRequest", method = RequestMethod.POST)
     public
     @ResponseBody

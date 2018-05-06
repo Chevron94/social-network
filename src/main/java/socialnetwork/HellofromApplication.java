@@ -246,6 +246,6 @@ public class HellofromApplication extends SpringBootServletInitializer {
 
     private static void doSimulation(ConfigurableApplicationContext context){
         Simulation simulation = context.getBean(Simulation.class);
-        simulation.simulate(false);
+        simulation.simulate(false, false, true, true);
     }
 }

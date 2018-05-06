@@ -53,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/activate/**").permitAll()
                 .antMatchers("/reset/**").permitAll()
                 .antMatchers("/resetRequest/**").permitAll()
+                .antMatchers("/registration/**").permitAll()
                 .antMatchers("/api/v1/**").authenticated()
                 .antMatchers("/**").access("hasRole('ROLE_USER')").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()

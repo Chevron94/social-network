@@ -5,10 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import socialnetwork.beans.AlbumBean;
 import socialnetwork.beans.DialogBean;
 import socialnetwork.beans.ListBean;
 import socialnetwork.beans.UserBean;
 import socialnetwork.entities.*;
+import socialnetwork.repositories.FriendRequestRepository;
 import socialnetwork.repositories.LanguageUserRepository;
 import socialnetwork.repositories.UserRepository;
 
@@ -40,9 +42,13 @@ public class Simulation {
     @Autowired
     private LanguageUserRepository languageUserRepository;
     @Autowired
+    private AlbumBean albumBean;
+    @Autowired
     private DialogBean dialogBean;
     @Autowired
     private ListBean listBean;
+    @Autowired
+    private UserBean userBean;
 
     private void generateUsers(Long continentID, Integer amount, Integer threadNumber) {
         Random random = new Random();
@@ -51,6 +57,7 @@ public class Simulation {
         List<Country> countries = listBean.getCountries(continentID);
         List<Language> languages = listBean.getLanguages();
         List<LanguageLevel> languageLevels = listBean.getLanguageLevels();
+        List<Album> albums = new ArrayList<>();
         List<User> users = Collections.synchronizedList(new ArrayList<>());
         List<LanguageUser> languageUsers = Collections.synchronizedList(new ArrayList<>());
         for (Integer i = 0; i < amount; i++) {
@@ -81,6 +88,7 @@ public class Simulation {
         }
         users = userRepository.save(users);
         for (User user : users) {
+            albumBean.createAlbum(user.getId(), "Main");
             Integer languagesAmount = random.nextInt(4) + 1;
             Set<Language> usedLanguages = new HashSet<>();
             for (Integer i = 0; i < languagesAmount; i++) {
@@ -127,7 +135,32 @@ public class Simulation {
         }
     }
 
-    public void simulate(Boolean generateUsers) {
+    public void generateFriends(Integer amount){
+        Random random = new Random();
+        for (Integer i = 0; i<amount; i++){
+            Long sender = random.nextLong()%100001 + 1;
+            Long receiver = random.nextLong()%100001 + 1;
+            userBean.sendFriendRequest(sender, receiver);
+            userBean.updateFriendRequest(sender, receiver);
+        }
+    }
+
+    private void generateFriendsAsync(Integer amount) {
+        Thread[] threads = new Thread[5];
+        for (Integer i = 0; i < 5; i++){
+            threads[i] = new Thread(() -> generateFriends(amount / 5));
+            threads[i].start();
+        }
+        try {
+            for (Thread thread : threads) {
+                thread.join();
+            }
+        } catch (InterruptedException ex) {
+            LOGGER.info("Something went wrong");
+        }
+    }
+
+    public void simulate(Boolean generateUsers, Boolean generateFriends, Boolean generateDialogs, Boolean generateMessages) {
         if (generateUsers) {
             Integer generated = 0;
             generateUsersAsync(EUROPE_ID, EUROPE_USERS);
@@ -149,6 +182,10 @@ public class Simulation {
             generated += SOUTH_AMERICA_USERS;
             LOGGER.info("generated {} users", generated);
             LOGGER.info("User generation complete");
+        }
+        if (generateFriends){
+            generateFriendsAsync(1000000);
+            LOGGER.info("Generated 1000000 friend requests");
         }
     }
 
